@@ -31,7 +31,7 @@ if (a == 12){
 
 ## Caveats
 
-* The first call to `Integer.valueOf(a)` where `a` is od type `int` and is satifies the following `-128 <= a <= 127` results in the JVM caching the objects `Integer.valueOf(i)` from `i = -128` to `i = 127` in memory. This results in some unintuitive behaviour when comparing `Integer.valueOf()` objects using `==`. For example:
+* The first call to `Integer.valueOf(a)` where `a` is od type `int` and is satifies the following `-128 <= a <= 127` results in the JVM caching the objects `Integer.valueOf(i)` for `-128 <= i <= 127` in memory. This results in some unintuitive behaviour when comparing `Integer.valueOf()` objects using `==`. For example:
 
 ```java
 System.out.println(Integer.valueOf(1) == Integer.valueOf(1)); // true
@@ -40,4 +40,4 @@ System.out.println(Integer.valueOf(-128) == Integer.valueOf(-128)); // true
 System.out.println(Integer.valueOf(128) == Integer.valueOf(128)); // false
 ``` 
 
-What is actually happening is that the memory addresses are being compared and since the Integer objects for `valueOf()` from -128 to 127 have been cached in memory, those memory addresses are being used in the comparison.
+What is actually happening is that the memory addresses are being compared and since the Integer objects for `Integer.valueOf()` from -128 to 127 have been cached in memory, those memory addresses are being used in the comparisons. This behaviour results in the first call of `Integer.valueOf()` being somewhat slower than successive calls within the bounds of `[-128, 127]`.
